@@ -1,0 +1,14 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:13.4
+    container_name: multi-tenancy-db
+    ports:
+      - 5432:5432
+    volumes:
+      - "~/Documents/Github Projects/multi-tenancy/scripts/data/:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=multi-tenancy
