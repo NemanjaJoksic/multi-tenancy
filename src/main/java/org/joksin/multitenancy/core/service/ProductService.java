@@ -8,7 +8,7 @@ import org.joksin.multitenancy.core.TenantContext;
 import org.joksin.multitenancy.core.dto.request.UpdateProductRequestDTO;
 import org.joksin.multitenancy.database.entity.ProductEntity;
 import org.joksin.multitenancy.database.repository.ProductJpaRepository;
-import org.joksin.multitenancy.database.util.TenantAwareQueryExecutor;
+import org.joksin.multitenancy.database.util.SchemaAwareQueryExecutor;
 
 import java.util.List;
 
@@ -18,17 +18,17 @@ public class ProductService {
 
   private final ProductJpaRepository productJpaRepository;
 
-  private final TenantAwareQueryExecutor tenantAwareQueryExecutor;
+  private final SchemaAwareQueryExecutor schemaAwareQueryExecutor;
   private final TenantContext tenantContext;
 
   public List<ProductDTO> findAll() {
-    return tenantAwareQueryExecutor.executeInTransactionReadOnly(
+    return schemaAwareQueryExecutor.executeInTransactionReadOnly(
         tenantContext.getTenantId(),
         () -> productJpaRepository.findAll().stream().map(this::toDTO).toList());
   }
 
   public ProductDTO create(CreateProductRequestDTO createProductRequestDto) {
-    return tenantAwareQueryExecutor.executeInTransaction(
+    return schemaAwareQueryExecutor.executeInTransaction(
         tenantContext.getTenantId(),
         () -> {
           var createdProductEntity =
@@ -43,7 +43,7 @@ public class ProductService {
   }
 
   public ProductDTO update(UpdateProductRequestDTO updateProductRequestDto) {
-    return tenantAwareQueryExecutor.executeInTransaction(
+    return schemaAwareQueryExecutor.executeInTransaction(
         tenantContext.getTenantId(),
         () -> {
           var productEntity =

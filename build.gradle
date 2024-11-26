@@ -26,6 +26,8 @@ dependencies {
     implementation("io.micronaut.serde:micronaut-serde-jackson")
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
 
+    implementation("io.projectreactor:reactor-core")
+
     compileOnly("io.micronaut:micronaut-http-client")
     compileOnly "org.projectlombok:lombok"
 

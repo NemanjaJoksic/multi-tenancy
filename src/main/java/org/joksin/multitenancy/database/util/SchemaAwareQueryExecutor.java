@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 
 @Singleton
 @AllArgsConstructor
-public class TenantAwareQueryExecutor {
+public class SchemaAwareQueryExecutor {
 
   private final EntityManager entityManager;
 

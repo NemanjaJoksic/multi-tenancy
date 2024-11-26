@@ -16,6 +16,8 @@ public class TenantContext {
   }
 
   public void clear() {
+    System.out.println("Clean context");
+
     this.tenantId = null;
     this.isInitialized = false;
   }
