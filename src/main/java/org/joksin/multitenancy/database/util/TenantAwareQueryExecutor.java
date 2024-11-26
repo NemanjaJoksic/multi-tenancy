@@ -4,6 +4,7 @@ import io.micronaut.transaction.annotation.Transactional;
 import jakarta.inject.Singleton;
 import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
+import org.joksin.multitenancy.common.TenantContext;
 
 import java.util.function.Supplier;
 
@@ -11,21 +12,22 @@ import java.util.function.Supplier;
 @AllArgsConstructor
 public class TenantAwareQueryExecutor {
 
-  private EntityManager entityManager;
+  private final EntityManager entityManager;
+  private final TenantContext tenantContext;
 
   @Transactional
-  public <T> T executeInTransaction(String tenant, Supplier<T> transaction) {
-    return executeInTransaction(tenant, transaction, true);
+  public <T> T executeInTransaction(Supplier<T> transaction) {
+    return executeInTransaction(transaction, true);
   }
 
   @Transactional(readOnly = true)
-  public <T> T executeInTransactionReadOnly(String tenant, Supplier<T> transaction) {
-    return executeInTransaction(tenant, transaction, false);
+  public <T> T executeInTransactionReadOnly(Supplier<T> transaction) {
+    return executeInTransaction(transaction, false);
   }
 
-  private <T> T executeInTransaction(String tenant, Supplier<T> transaction, boolean shouldFlush) {
+  private <T> T executeInTransaction(Supplier<T> transaction, boolean shouldFlush) {
     try {
-      setSchema(tenant);
+      setSchema(tenantContext.getTenantId());
       var result = transaction.get();
 
       if (shouldFlush) {
