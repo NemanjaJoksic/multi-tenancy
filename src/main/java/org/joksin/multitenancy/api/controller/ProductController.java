@@ -5,7 +5,7 @@ import io.micronaut.http.annotation.*;
 import lombok.AllArgsConstructor;
 import org.joksin.multitenancy.core.dto.ProductDTO;
 import org.joksin.multitenancy.core.dto.request.CreateProductRequestDTO;
-import org.joksin.multitenancy.common.TenantContext;
+import org.joksin.multitenancy.core.TenantContext;
 import org.joksin.multitenancy.core.dto.request.UpdateProductRequestDTO;
 import org.joksin.multitenancy.core.service.ProductService;
 
@@ -21,18 +21,24 @@ public class ProductController {
   @Get("/api/products")
   @Status(HttpStatus.OK)
   public List<ProductDTO> findAll(@Header("Tenant") String tenant) {
-    tenantContext.initialize(tenant);
-
-    return productService.findAll();
+    try {
+      tenantContext.initialize(tenant);
+      return productService.findAll();
+    } finally {
+      tenantContext.clear();
+    }
   }
 
   @Post("/api/products")
   @Status(HttpStatus.CREATED)
   public ProductDTO create(
       @Header("Tenant") String tenant, @Body CreateProductRequestDTO createProductRequestDto) {
-    tenantContext.initialize(tenant);
-
-    return productService.create(createProductRequestDto);
+    try {
+      tenantContext.initialize(tenant);
+      return productService.create(createProductRequestDto);
+    } finally {
+      tenantContext.clear();
+    }
   }
 
   @Put("/api/products/{id}")
@@ -41,8 +47,11 @@ public class ProductController {
       @Header("Tenant") String tenant,
       @PathVariable Long id,
       @Body UpdateProductRequestDTO updateProductRequestDto) {
-    tenantContext.initialize(tenant);
-
-    return productService.update(updateProductRequestDto.withId(id));
+    try {
+      tenantContext.initialize(tenant);
+      return productService.update(updateProductRequestDto.withId(id));
+    } finally {
+      tenantContext.clear();
+    }
   }
 }

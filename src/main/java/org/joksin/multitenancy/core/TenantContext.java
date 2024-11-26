@@ -1,8 +1,8 @@
-package org.joksin.multitenancy.common;
+package org.joksin.multitenancy.core;
 
-import io.micronaut.runtime.http.scope.RequestScope;
+import io.micronaut.context.annotation.Context;
 
-@RequestScope
+@Context
 public class TenantContext {
 
   private String tenantId;
@@ -13,6 +13,11 @@ public class TenantContext {
 
     this.tenantId = tenantId;
     this.isInitialized = true;
+  }
+
+  public void clear() {
+    this.tenantId = null;
+    this.isInitialized = false;
   }
 
   public String getTenantId() {

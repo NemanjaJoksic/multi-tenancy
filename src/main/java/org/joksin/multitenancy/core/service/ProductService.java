@@ -4,7 +4,7 @@ import jakarta.inject.Singleton;
 import lombok.AllArgsConstructor;
 import org.joksin.multitenancy.core.dto.ProductDTO;
 import org.joksin.multitenancy.core.dto.request.CreateProductRequestDTO;
-import org.joksin.multitenancy.common.TenantContext;
+import org.joksin.multitenancy.core.TenantContext;
 import org.joksin.multitenancy.core.dto.request.UpdateProductRequestDTO;
 import org.joksin.multitenancy.database.entity.ProductEntity;
 import org.joksin.multitenancy.database.repository.ProductJpaRepository;
