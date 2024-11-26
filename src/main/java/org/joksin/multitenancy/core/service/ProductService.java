@@ -1,6 +1,7 @@
 package org.joksin.multitenancy.core.service;
 
 import jakarta.inject.Singleton;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.joksin.multitenancy.core.dto.ProductDTO;
 import org.joksin.multitenancy.core.dto.request.CreateProductRequestDTO;
@@ -19,17 +20,17 @@ public class ProductService {
   private final ProductJpaRepository productJpaRepository;
 
   private final SchemaAwareQueryExecutor schemaAwareQueryExecutor;
-  private final TenantContext tenantContext;
 
-  public List<ProductDTO> findAll() {
+  public List<ProductDTO> findAll(@Valid TenantContext tenantContext) {
     return schemaAwareQueryExecutor.executeInTransactionReadOnly(
-        tenantContext.getTenantId(),
+        tenantContext.getSchema(),
         () -> productJpaRepository.findAll().stream().map(this::toDTO).toList());
   }
 
-  public ProductDTO create(CreateProductRequestDTO createProductRequestDto) {
+  public ProductDTO create(
+      @Valid TenantContext tenantContext, CreateProductRequestDTO createProductRequestDto) {
     return schemaAwareQueryExecutor.executeInTransaction(
-        tenantContext.getTenantId(),
+        tenantContext.getSchema(),
         () -> {
           var createdProductEntity =
               productJpaRepository.save(
@@ -42,9 +43,10 @@ public class ProductService {
         });
   }
 
-  public ProductDTO update(UpdateProductRequestDTO updateProductRequestDto) {
+  public ProductDTO update(
+      @Valid TenantContext tenantContext, UpdateProductRequestDTO updateProductRequestDto) {
     return schemaAwareQueryExecutor.executeInTransaction(
-        tenantContext.getTenantId(),
+        tenantContext.getSchema(),
         () -> {
           var productEntity =
               productJpaRepository.findById(updateProductRequestDto.id()).orElseThrow();

@@ -19,17 +19,19 @@ dependencies {
     annotationProcessor("io.micronaut.data:micronaut-data-processor")
     annotationProcessor("io.micronaut:micronaut-http-validation")
     annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
-    annotationProcessor "org.projectlombok:lombok"
+    annotationProcessor("io.micronaut.validation:micronaut-validation")
+    annotationProcessor("org.projectlombok:lombok")
 
     implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
     implementation("io.micronaut.flyway:micronaut-flyway")
     implementation("io.micronaut.serde:micronaut-serde-jackson")
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
+    implementation("io.micronaut.validation:micronaut-validation")
 
     implementation("io.projectreactor:reactor-core")
 
     compileOnly("io.micronaut:micronaut-http-client")
-    compileOnly "org.projectlombok:lombok"
+    compileOnly("org.projectlombok:lombok")
 
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("org.flywaydb:flyway-database-postgresql")
