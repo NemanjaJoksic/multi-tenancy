@@ -1,4 +1,4 @@
-package org.joksin.multitenancy.api.dto;
+package org.joksin.multitenancy.core.dto;
 
 import io.micronaut.serde.annotation.Serdeable;
 import lombok.Builder;

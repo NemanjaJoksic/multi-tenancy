@@ -1,10 +1,7 @@
 package org.joksin.multitenancy.database.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Builder
 @NoArgsConstructor
@@ -18,7 +15,7 @@ public class ProductEntity {
   @SequenceGenerator(name = "product_id_seq", allocationSize = 1)
   private Long id;
 
-  private String name;
+  @Setter private String name;
 
-  private Integer count;
+  @Setter private Integer count;
 }
